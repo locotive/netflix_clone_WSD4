@@ -56,7 +56,7 @@ git clone [repository-url]
 IP_ADDRESS=localhost
 PORT=5173 # 개발환경
 VITE_KAKAO_CLIENT_ID=YOUR_KAKAO_CLIENT_ID
-VITE_KAKAO_REDIRECT_URI=http://localhost:5173/netflix_clone/oauth/callback/kakao
+VITE_KAKAO_REDIRECT_URI=http://localhost:5173/netflix_clone_WSD4/oauth/callback/kakao
 VITE_TMDB_API_KEY=YOUR_TMDB_API_KEY
 VITE_API_BASE_URL=http://localhost:5173
 
