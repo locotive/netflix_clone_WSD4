@@ -32,7 +32,7 @@ jobs:
         env:
           VITE_KAKAO_CLIENT_ID: ${{ secrets.VITE_KAKAO_CLIENT_ID }}
           VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
-          VITE_KAKAO_REDIRECT_URI: 'https://locotive.github.io/netflix_clone/oauth/callback/kakao'
+          VITE_KAKAO_REDIRECT_URI: 'https://locotive.github.io/netflix_clone_WSD4/oauth/callback/kakao'
           VITE_API_BASE_URL: 'https://locotive.github.io'
           VITE_API_TIMEOUT: '3000'
           VITE_MAX_RETRIES: '1'
