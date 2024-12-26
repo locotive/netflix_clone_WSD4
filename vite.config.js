@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    base: mode === 'production' ? '/netflix_clone/' : '/',
+    base: mode === 'production' ? '/netflix_clone_WSD4/' : '/',
     plugins: [vue()],
     resolve: {
       alias: {

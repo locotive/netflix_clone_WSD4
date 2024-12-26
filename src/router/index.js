@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
-  history: createWebHistory('/netflix_clone/'),
+  history: createWebHistory('/netflix_clone_WSD4/'),
   routes: [
     {
       path: '/',
