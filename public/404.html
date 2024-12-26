@@ -3,33 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>Netflix Clone</title>
-    <script>
-      // 현재 URL 파싱
-      const currentPath = window.location.pathname;
-      const currentSearch = window.location.search;
-      const currentHash = window.location.hash;
-      
-      console.log('404 페이지 - 현재 경로:', currentPath);
-      console.log('404 페이지 - 쿼리 파라미터:', currentSearch);
-      
-      // 카카오 콜백 URL인 경우
-      if (currentPath.includes('/oauth/callback/kakao')) {
-        // 전체 URL을 세션 스토리지에 저장
-        const redirectPath = currentPath.replace('/netflix_clone', '') + currentSearch + currentHash;
-        sessionStorage.redirect = redirectPath;
-        console.log('404 페이지 - 저장된 리다이렉트 경로:', redirectPath);
-        
-        // 메인 페이지로 리다이렉트
-        window.location.replace('/netflix_clone/');
-      } else {
-        // 다른 경로의 경우 메인 페이지로 리다이렉트
-        window.location.replace('/netflix_clone/');
-      }
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
   </head>
   <body>
-    <div style="display: none;">
-      Redirecting to Netflix Clone...
-    </div>
   </body>
 </html>
