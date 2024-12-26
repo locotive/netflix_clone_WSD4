@@ -1,0 +1,78 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build
+        env:
+          VITE_KAKAO_CLIENT_ID: ${{ secrets.VITE_KAKAO_CLIENT_ID }}
+          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
+          VITE_KAKAO_REDIRECT_URI: 'https://locotive.github.io/netflix_clone/oauth/callback/kakao'
+          VITE_API_BASE_URL: 'https://locotive.github.io'
+          VITE_API_TIMEOUT: '3000'
+          VITE_MAX_RETRIES: '1'
+          VITE_LOG_LEVEL: 'error'
+          VITE_TMDB_IMAGE_BASE_URL: 'https://image.tmdb.org/t/p'
+          VITE_TMDB_API_VERSION: '3'
+          VITE_STORAGE_PREFIX: 'netflix_clone_prod_'
+        run: |
+          echo "=== 환경 변수 확인 ==="
+          echo "VITE_KAKAO_CLIENT_ID 존재 여부: $([[ ! -z "$VITE_KAKAO_CLIENT_ID" ]] && echo "YES" || echo "NO")"
+          echo "VITE_TMDB_API_KEY 존재 여부: $([[ ! -z "$VITE_TMDB_API_KEY" ]] && echo "YES" || echo "NO")"
+          echo "VITE_KAKAO_REDIRECT_URI: $VITE_KAKAO_REDIRECT_URI"
+          echo "VITE_API_BASE_URL: $VITE_API_BASE_URL"
+          
+          echo "=== .env.production 파일 생성 ==="
+          echo "VITE_KAKAO_CLIENT_ID=$VITE_KAKAO_CLIENT_ID" >> .env.production
+          echo "VITE_TMDB_API_KEY=$VITE_TMDB_API_KEY" >> .env.production
+          echo "VITE_KAKAO_REDIRECT_URI=$VITE_KAKAO_REDIRECT_URI" >> .env.production
+          echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" >> .env.production
+          echo "VITE_API_TIMEOUT=3000" >> .env.production
+          echo "VITE_MAX_RETRIES=1" >> .env.production
+          echo "VITE_LOG_LEVEL=error" >> .env.production
+          echo "VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p" >> .env.production
+          echo "VITE_TMDB_API_VERSION=3" >> .env.production
+          echo "VITE_STORAGE_PREFIX=netflix_clone_prod_" >> .env.production
+          
+          echo "=== .env.production 파일 내용 확인 ==="
+          cat .env.production | grep -v "KEY\|ID"
+          
+          echo "=== 빌드 시작 ==="
+          npm run build
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './dist'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
